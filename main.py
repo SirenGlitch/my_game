@@ -13,6 +13,9 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
+
+MAX_LASER = 1
+
 RED_LASER_USE = 1
 YELLOW_LASER_USE = 1
 
@@ -38,6 +41,9 @@ SPACESHIP_WIDTH, SPACESHIP_HEIGHT = 55, 40
 
 YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
+YELLOW_LASER_HIT = pygame.USEREVENT + 3
+RED_LASER_HIT = pygame.USEREVENT + 4
+
 
 YELLOW_SPACESHIP_IMAGE = pygame.image.load(
     os.path.join('Assets', 'spaceship_yellow.png'))
@@ -51,11 +57,17 @@ RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(
 
 SPACE = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'space.png')), (WIDTH, HEIGHT))
 
+red = pygame.Rect(700, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
+yellow = pygame.Rect(100, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
 
-def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
+def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health, red_laser, yellow_laser):
     WIN.blit(SPACE, (0, 0))
     pygame.draw.rect(WIN, BLACK, BORDER)
     
+    for laser in red_laser:
+        pygame.draw.rect(WIN, YELLOW, laser)
+    for laser in yellow_laser:
+        pygame.draw.rect(WIN, RED, laser)
     red_health_text = HEALTH_FONT.render(
         "Health: " + str(red_health), 1, GREEN)
     yellow_health_text = HEALTH_FONT.render(
@@ -114,6 +126,22 @@ def handle_bullets(yellow_bullets, red_bullets, yellow, red):
         elif bullet.x < 0:
             red_bullets.remove(bullet)
 
+def handle_laser(yellow_laser, red_laser, yellow, red):
+    YELLOW_FIRED_LASER = pygame.Rect(
+        yellow.x, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
+    RED_FIRED_LASER = pygame.Rect(
+        red.x, red.y + red.height//2 - 2, 10, 5)
+    
+    for RED_FIRED_LASER in yellow_laser:
+        if red.colliderect(YELLOW_FIRED_LASER):
+            pygame.event.post(pygame.event.Event(RED_LASER_HIT))
+            yellow_laser.remove(RED_FIRED_LASER)
+    
+    for YELLOW_FIRED_LASER in red_laser:
+        if yellow.colliderect(RED_FIRED_LASER):
+            pygame.event.post(pygame.event.Event(YELLOW_LASER_HIT))
+            red_laser.remove(YELLOW_FIRED_LASER)
+
 
 def draw_winner(text):
     draw_text = WINNER_FONT.render(text, 1, GREEN)
@@ -124,19 +152,25 @@ def draw_winner(text):
 
 
 def main():
-    red = pygame.Rect(700, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
-    yellow = pygame.Rect(100, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
-    
     red_bullets = []
     yellow_bullets = []
     
+    red_laser = []
+    yellow_laser = []
+
     red_health = 10
     yellow_health = 10
     
     clock = pygame.time.Clock()
     run = True
     while run:
-        clock.tick(FPS)
+        clock.tick(FPS) 
+        
+        YELLOW_FIRED_LASER = pygame.Rect(
+            yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
+        RED_FIRED_LASER = pygame.Rect(
+            (red.x, red.y) + (red.height//2 - 2, 10, 5))
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -155,12 +189,26 @@ def main():
                     red_bullets.append(bullet)
                     BULLET_PEW_SOUND.play()
 
+                if event.key == pygame.K_z and len(yellow_laser) < MAX_LASER:
+                    yellow_laser.append(YELLOW_FIRED_LASER)
+                
+                if event.key == pygame.K_RETURN and len(red_laser) < MAX_LASER:
+                    red_laser.append(RED_FIRED_LASER)
+
             if event.type == RED_HIT:
                 red_health -= 1
                 BULLET_HIT_SOUND.play()
 
             if event.type == YELLOW_HIT:
                 yellow_health -= 1
+                BULLET_HIT_SOUND.play()
+
+            if event.type == RED_LASER_HIT:
+                red_health -= LASER_DAMAGE
+                BULLET_HIT_SOUND.play()
+
+            if event.type == YELLOW_LASER_HIT:
+                yellow_health -= LASER_DAMAGE
                 BULLET_HIT_SOUND.play()
 
         winner_text = ""
@@ -177,11 +225,12 @@ def main():
         keys_pressed = pygame.key.get_pressed()
         yellow_handle_movement(keys_pressed, yellow)
         red_handle_movement(keys_pressed, red)
-        
+
         handle_bullets(yellow_bullets, red_bullets, yellow, red)
+        handle_laser(red_laser, yellow_laser, yellow, red)
         
         draw_window(red, yellow, red_bullets, yellow_bullets,
-                    red_health, yellow_health)
+                    red_health, yellow_health, yellow_laser, red_laser)
 
     main()
 
