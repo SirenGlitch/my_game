@@ -13,6 +13,15 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
+RED_LASER_USE = 1
+YELLOW_LASER_USE = 1
+
+RED_LASER_COLOUR = (RED)
+YELLOW_LASER_COLOUR = (YELLOW)
+
+LASER_DAMAGE = 4
+
+
 BORDER = pygame.Rect(WIDTH//2 - 5, 0, 10, HEIGHT)
 
 BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Grenade+1.mp3'))
