@@ -130,7 +130,7 @@ def handle_laser(yellow_laser, red_laser, yellow, red):
     YELLOW_FIRED_LASER = pygame.Rect(
         yellow.x, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
     RED_FIRED_LASER = pygame.Rect(
-        red.x, red.y + red.height//2 - 2, 10, 5)
+        red.x - WIDTH,  red.y, WIDTH, red.height)
     
     for RED_FIRED_LASER in yellow_laser:
         if red.colliderect(YELLOW_FIRED_LASER):
@@ -169,7 +169,7 @@ def main():
         YELLOW_FIRED_LASER = pygame.Rect(
             yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
         RED_FIRED_LASER = pygame.Rect(
-            red.x, red.y + red.height//2 - 2, 10, 5)
+            red.x - WIDTH,  red.y,  WIDTH, red.height)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
