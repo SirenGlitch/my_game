@@ -169,7 +169,7 @@ def main():
         YELLOW_FIRED_LASER = pygame.Rect(
             yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
         RED_FIRED_LASER = pygame.Rect(
-            (red.x, red.y) + (red.height//2 - 2, 10, 5))
+            red.x, red.y + red.height//2 - 2, 10, 5)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
