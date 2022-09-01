@@ -134,12 +134,12 @@ def handle_laser(yellow_laser, red_laser, yellow, red):
     
     for RED_FIRED_LASER in yellow_laser:
         if red.colliderect(YELLOW_FIRED_LASER):
-            pygame.event.post(pygame.event.Event(RED_LASER_HIT))
+            pygame.event.post(pygame.event.Event(YELLOW_LASER_HIT))
             yellow_laser.remove(RED_FIRED_LASER)
     
     for YELLOW_FIRED_LASER in red_laser:
         if yellow.colliderect(RED_FIRED_LASER):
-            pygame.event.post(pygame.event.Event(YELLOW_LASER_HIT))
+            pygame.event.post(pygame.event.Event(RED_LASER_HIT))
             red_laser.remove(YELLOW_FIRED_LASER)
 
 
