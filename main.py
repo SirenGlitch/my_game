@@ -157,6 +157,9 @@ def main():
     
     red_laser = []
     yellow_laser = []
+    
+    red_laser_uses = RED_LASER_USE
+    yellow_laser_uses = YELLOW_LASER_USE
 
     red_health = 10
     yellow_health = 10
@@ -189,11 +192,13 @@ def main():
                     red_bullets.append(bullet)
                     BULLET_PEW_SOUND.play()
 
-                if event.key == pygame.K_z and len(yellow_laser) < MAX_LASER:
+                if event.key == pygame.K_z and len(yellow_laser) < MAX_LASER and yellow_laser_uses > 0:
                     yellow_laser.append(YELLOW_FIRED_LASER)
+                    yellow_laser_uses -= 1
                 
-                if event.key == pygame.K_RETURN and len(red_laser) < MAX_LASER:
+                if event.key == pygame.K_RETURN and len(red_laser) < MAX_LASER and red_laser_uses > 0:
                     red_laser.append(RED_FIRED_LASER)
+                    red_laser_uses -= 1
 
             if event.type == RED_HIT:
                 red_health -= 1
