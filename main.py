@@ -1,5 +1,7 @@
-import pygame
+installer = 'pip install pygame'
 import os
+os.system(installer)
+import pygame
 pygame.font.init()
 pygame.mixer.init()
 
