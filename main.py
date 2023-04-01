@@ -202,6 +202,10 @@ def main():
                     red_laser.append(RED_FIRED_LASER)
                     red_laser_uses -= 1
 
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+
+
             if event.type == RED_HIT:
                 red_health -= 1
                 BULLET_HIT_SOUND.play()
