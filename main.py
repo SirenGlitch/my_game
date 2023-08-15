@@ -1,7 +1,20 @@
 installer = 'pip install pygame'
 import os
 os.system(installer)
+import sys
 import pygame
+
+def get_resource_path(relative_path):
+    """Get the absolute path to the resource, accounting for PyInstaller's temporary folder."""
+    if getattr(sys, 'frozen', False):
+        # If the application is run as a bundle, the pyInstaller bootloader sets this
+        base_path = sys._MEIPASS
+    else:
+        # If not run as a bundle, the path is the path of the script
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 pygame.font.init()
 pygame.mixer.init()
 
@@ -29,8 +42,8 @@ LASER_DAMAGE = 4
 
 BORDER = pygame.Rect(WIDTH//2 - 5, 0, 10, HEIGHT)
 
-BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Grenade+1.mp3'))
-BULLET_PEW_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Gun+Silencer.mp3'))
+BULLET_HIT_SOUND = pygame.mixer.Sound(get_resource_path(os.path.join('Assets', 'Grenade+1.mp3')))
+BULLET_PEW_SOUND = pygame.mixer.Sound(get_resource_path(os.path.join('Assets', 'Gun+Silencer.mp3')))
 
 HEALTH_FONT = pygame.font.SysFont('comicsans', 40)
 WINNER_FONT = pygame.font.SysFont('comicsans', 100)
@@ -47,17 +60,18 @@ YELLOW_LASER_HIT = pygame.USEREVENT + 3
 RED_LASER_HIT = pygame.USEREVENT + 4
 
 
-YELLOW_SPACESHIP_IMAGE = pygame.image.load(
-    os.path.join('Assets', 'spaceship_yellow.png'))
+YELLOW_SPACESHIP_IMAGE = pygame.image.load(get_resource_path(
+    os.path.join('Assets', 'spaceship_yellow.png')))
 YELLOW_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(
     YELLOW_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 90 )
 
-RED_SPACESHIP_IMAGE = pygame.image.load(
-    os.path.join('Assets', 'spaceship_red.png'))
+RED_SPACESHIP_IMAGE = pygame.image.load(get_resource_path(
+    os.path.join('Assets', 'spaceship_red.png')))
 RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(
     RED_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 270)
 
-SPACE = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'space.png')), (WIDTH, HEIGHT))
+SPACE = pygame.image.load(get_resource_path(os.path.join('Assets', 'space.png')))
+SPACE = pygame.transform.scale(SPACE, (WIDTH, HEIGHT))
 
 red = pygame.Rect(700, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
 yellow = pygame.Rect(100, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
