@@ -1,6 +1,4 @@
-installer = 'pip install pygame'
 import os
-os.system(installer)
 import sys
 import pygame
 
