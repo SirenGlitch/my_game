@@ -32,21 +32,21 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest
-          
-    container:
-      image: sirenglitch/mygame:latest
-        
+  
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Log in to Docker Hub
+        run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
     
-    - name: Build Linux executable
-      run: |
-        # The Docker container will run this command defined in the Dockerfile
-        
-    - name: Upload Linux executable artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: Linux-Build
-        path: dist/Game
-        
+      - name: Checkout repository
+        uses: actions/checkout@v2
+    
+      - name: Build Linux executable
+        run: |
+          docker pull sirenglitch/mygame:latest
+          docker run --rm -v $(pwd):/app sirenglitch/mygame:latest
+          
+      - name: Upload Linux executable artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Linux-Build
+          path: dist/Game
