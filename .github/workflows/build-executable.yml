@@ -34,15 +34,12 @@ jobs:
     runs-on: ubuntu-latest
           
     container:
-      image: mygame:latest
+      image: sirenglitch/mygame:latest
         
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
     
-    - name: Log in to Docker Hub
-      run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-
     - name: Build Linux executable
       run: |
         # The Docker container will run this command defined in the Dockerfile
