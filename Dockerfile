@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y python3.9 python3-pip
 
 # Install dependencies
 RUN pip3 install --upgrade pip
-RUN pip3 install pyinstaller
+RUN pip3 install pyinstaller pygame
 
 # Set the working directory
 WORKDIR /app
