@@ -43,7 +43,7 @@ jobs:
       - name: Build Linux executable
         run: |
           docker pull sirenglitch/my_game:alpha
-          docker run --rm -v $HOME/my_game:/app sirenglitch/my_game:alpha
+          docker run --rm -v ./my_game:/app sirenglitch/my_game:alpha
           
       - name: Upload Linux executable artifact
         uses: actions/upload-artifact@v2
