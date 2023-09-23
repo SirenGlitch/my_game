@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 
+
 def get_resource_path(relative_path):
     """Get the absolute path to the resource, accounting for PyInstaller's temporary folder."""
     if getattr(sys, 'frozen', False):
@@ -12,6 +13,7 @@ def get_resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
 
 pygame.font.init()
 pygame.mixer.init()
@@ -73,6 +75,7 @@ SPACE = pygame.transform.scale(SPACE, (WIDTH, HEIGHT))
 
 red = pygame.Rect(700, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
 yellow = pygame.Rect(100, 300, SPACESHIP_HEIGHT, SPACESHIP_WIDTH)
+
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health, red_laser, yellow_laser):
     WIN.blit(SPACE, (0, 0))
@@ -139,6 +142,7 @@ def handle_bullets(yellow_bullets, red_bullets, yellow, red):
             red_bullets.remove(bullet)
         elif bullet.x < 0:
             red_bullets.remove(bullet)
+
 
 def handle_laser(yellow_laser, red_laser, yellow, red):
     YELLOW_FIRED_LASER = pygame.Rect(
