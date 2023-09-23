@@ -1,5 +1,8 @@
-# Use Ubuntu 22.04 as the base image
-FROM ubuntu:22.04
+# Use Ubuntu 20.04 as the base image
+FROM ubuntu:20.04
+
+# Set environment variable to prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Set up environment
 RUN apt-get update && apt-get install -y python3.9 python3-pip
