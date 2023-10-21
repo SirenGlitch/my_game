@@ -8,10 +8,10 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.9
 
@@ -25,7 +25,7 @@ jobs:
         pyinstaller --onefile --name="Game" --add-data "Assets;Assets" main.py
 
     - name: Upload Windows executable artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Windows-Build
         path: dist/Game.exe
@@ -38,7 +38,7 @@ jobs:
         run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
     
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
     
       - name: Build Linux executable
         run: |
@@ -46,7 +46,7 @@ jobs:
           docker run --rm -v $HOME/work/my_game/my_game:/app sirenglitch/my_game:beta
           
       - name: Upload Linux executable artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Linux-Build
           path: dist/Game
