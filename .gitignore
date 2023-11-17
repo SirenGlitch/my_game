@@ -282,3 +282,4 @@ $RECYCLE.BIN/
 build/
 dist/
 *.spec
+.venv/
