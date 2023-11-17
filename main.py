@@ -34,8 +34,8 @@ MAX_LASER = 1
 RED_LASER_USE = 1
 YELLOW_LASER_USE = 1
 
-RED_LASER_COLOUR = (RED)
-YELLOW_LASER_COLOUR = (YELLOW)
+RED_LASER_COLOUR = RED
+YELLOW_LASER_COLOUR = YELLOW
 
 LASER_DAMAGE = 4
 
@@ -63,7 +63,7 @@ RED_LASER_HIT = pygame.USEREVENT + 4
 YELLOW_SPACESHIP_IMAGE = pygame.image.load(get_resource_path(
     os.path.join('Assets', 'spaceship_yellow.png')))
 YELLOW_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(
-    YELLOW_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 90 )
+    YELLOW_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 90)
 
 RED_SPACESHIP_IMAGE = pygame.image.load(get_resource_path(
     os.path.join('Assets', 'spaceship_red.png')))
@@ -86,9 +86,9 @@ def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_hea
     for laser in yellow_laser:
         pygame.draw.rect(WIN, RED, laser)
     red_health_text = HEALTH_FONT.render(
-        "Health: " + str(red_health), 1, GREEN)
+        "Health: " + str(red_health), True, GREEN)
     yellow_health_text = HEALTH_FONT.render(
-        "Health: " + str(yellow_health), 1, GREEN)
+        "Health: " + str(yellow_health), True, GREEN)
     WIN.blit(red_health_text, (WIDTH - red_health_text.get_width() - 10, 10))
     WIN.blit(yellow_health_text, (10, 10))
 
@@ -105,25 +105,25 @@ def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_hea
 
 
 def yellow_handle_movement(keys_pressed, yellow):
-        if keys_pressed[pygame.K_a] and yellow.x - VEL > 0: # LEFT
-            yellow.x -= VEL
-        if keys_pressed[pygame.K_d] and yellow.x + VEL + yellow.width < BORDER.x: # RIGHT
-            yellow.x += VEL
-        if keys_pressed[pygame.K_w] and yellow.y - VEL > 0: # UP
-            yellow.y -= VEL
-        if keys_pressed[pygame.K_s] and yellow.y + VEL + yellow.height < HEIGHT: # DOWN
-            yellow.y += VEL
+    if keys_pressed[pygame.K_a] and yellow.x - VEL > 0:  # LEFT
+        yellow.x -= VEL
+    if keys_pressed[pygame.K_d] and yellow.x + VEL + yellow.width < BORDER.x:  # RIGHT
+        yellow.x += VEL
+    if keys_pressed[pygame.K_w] and yellow.y - VEL > 0:  # UP
+        yellow.y -= VEL
+    if keys_pressed[pygame.K_s] and yellow.y + VEL + yellow.height < HEIGHT:  # DOWN
+        yellow.y += VEL
 
 
 def red_handle_movement(keys_pressed, red):
-        if keys_pressed[pygame.K_LEFT] and red.x - VEL > BORDER.x + BORDER.width: # LEFT
-            red.x -= VEL
-        if keys_pressed[pygame.K_RIGHT] and red.x + VEL + red.width < WIDTH: # RIGHT
-            red.x += VEL
-        if keys_pressed[pygame.K_UP] and red.y - VEL > 0: # UP
-            red.y -= VEL
-        if keys_pressed[pygame.K_DOWN] and red.y + VEL + red.height < HEIGHT: # DOWN
-            red.y += VEL
+    if keys_pressed[pygame.K_LEFT] and red.x - VEL > BORDER.x + BORDER.width:  # LEFT
+        red.x -= VEL
+    if keys_pressed[pygame.K_RIGHT] and red.x + VEL + red.width < WIDTH:  # RIGHT
+        red.x += VEL
+    if keys_pressed[pygame.K_UP] and red.y - VEL > 0:  # UP
+        red.y -= VEL
+    if keys_pressed[pygame.K_DOWN] and red.y + VEL + red.height < HEIGHT:  # DOWN
+        red.y += VEL
 
 
 def handle_bullets(yellow_bullets, red_bullets, yellow, red):
@@ -145,26 +145,25 @@ def handle_bullets(yellow_bullets, red_bullets, yellow, red):
 
 
 def handle_laser(yellow_laser, red_laser, yellow, red):
-    YELLOW_FIRED_LASER = pygame.Rect(
+    yellow_fired_laser = pygame.Rect(
         yellow.x, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
-    RED_FIRED_LASER = pygame.Rect(
+    red_fired_laser = pygame.Rect(
         red.x - WIDTH,  red.y, WIDTH, red.height)
     
-    for RED_FIRED_LASER in yellow_laser:
-        if red.colliderect(YELLOW_FIRED_LASER):
+    for red_fired_laser in yellow_laser:
+        if red.colliderect(yellow_fired_laser):
             pygame.event.post(pygame.event.Event(YELLOW_LASER_HIT))
-            yellow_laser.remove(RED_FIRED_LASER)
+            yellow_laser.remove(red_fired_laser)
     
-    for YELLOW_FIRED_LASER in red_laser:
-        if yellow.colliderect(RED_FIRED_LASER):
+    for yellow_fired_laser in red_laser:
+        if yellow.colliderect(red_fired_laser):
             pygame.event.post(pygame.event.Event(RED_LASER_HIT))
-            red_laser.remove(YELLOW_FIRED_LASER)
+            red_laser.remove(yellow_fired_laser)
 
 
 def draw_winner(text):
-    draw_text = WINNER_FONT.render(text, 1, GREEN)
-    WIN.blit(draw_text, (WIDTH/2 - draw_text.get_width() /
-    2, HEIGHT/2 - draw_text.get_height()/2))
+    draw_text = WINNER_FONT.render(text, True, GREEN)
+    WIN.blit(draw_text, (WIDTH/2 - draw_text.get_width() / 2, HEIGHT/2 - draw_text.get_height()/2))
     pygame.display.update()
     pygame.time.delay(5000)
 
@@ -187,9 +186,9 @@ def main():
     while run:
         clock.tick(FPS) 
         
-        YELLOW_FIRED_LASER = pygame.Rect(
+        yellow_fired_laser = pygame.Rect(
             yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, WIDTH, yellow.height)
-        RED_FIRED_LASER = pygame.Rect(
+        red_fired_laser = pygame.Rect(
             red.x - WIDTH,  red.y,  WIDTH, red.height)
         
         for event in pygame.event.get():
@@ -211,16 +210,15 @@ def main():
                     BULLET_PEW_SOUND.play()
 
                 if event.key == pygame.K_z and len(yellow_laser) < MAX_LASER and yellow_laser_uses > 0:
-                    yellow_laser.append(YELLOW_FIRED_LASER)
+                    yellow_laser.append(yellow_fired_laser)
                     yellow_laser_uses -= 1
                 
                 if event.key == pygame.K_RETURN and len(red_laser) < MAX_LASER and red_laser_uses > 0:
-                    red_laser.append(RED_FIRED_LASER)
+                    red_laser.append(red_fired_laser)
                     red_laser_uses -= 1
 
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
-
 
             if event.type == RED_HIT:
                 red_health -= 1
@@ -260,6 +258,7 @@ def main():
                     red_health, yellow_health, yellow_laser, red_laser)
 
     main()
+
 
 if __name__ == "__main__":
     main()
