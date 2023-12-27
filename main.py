@@ -7,7 +7,7 @@ import pygame
 def get_resource_path(relative_path):
     """Get the absolute path to the resource, accounting for PyInstaller's temporary folder."""
     if getattr(sys, 'frozen', False):
-        # If the application is run as a bundle, the pyInstaller bootloader sets this
+        # If the application is run as a bundle, the PyInstaller bootloader sets this
         base_path = sys._MEIPASS
     else:
         # If not run as a bundle, the path is the path of the script
